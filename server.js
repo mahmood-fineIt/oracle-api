@@ -284,6 +284,8 @@ function currentStatus(job) {
 // App
 // ---------------------------------------------------------------------------
 const app = express();
+// Behind nginx/TLS: take the protocol and host from X-Forwarded-* so links in responses are https.
+app.set('trust proxy', true);
 app.use(express.json({ limit: '50mb', type: ['application/json', 'application/*+json'] }));
 app.use((req, _res, next) => { console.log(`${new Date().toISOString()} ${req.method} ${req.originalUrl.slice(0, 160)}`); next(); });
 
