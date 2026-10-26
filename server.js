@@ -336,7 +336,7 @@ app.get(`${BASE}/accountCombinationsLOV`, (req, res) => res.json(collection(appl
   .map(c => Object.fromEntries(LOV_FIELDS.map(f => [f, f === 'StartDateActive' ? '2020-01-01' : f === 'EndDateActive' ? null : c[f]]))), req)));
 // Value sets (Common Features API). The natural account segment's value set gives account codes
 // with names; its values child is reached through the link in the value set (the id is a hash key).
-const VALUE_SETS = [{ ValueSetId: 300100, ValueSetCode: 'CH_NATURAL_ACCOUNT', Description: 'Natural account', hash: '00020000000EACED0005770800000000000493E4' }];
+const VALUE_SETS = [{ ValueSetId: 300100, ValueSetCode: 'ACCOUNTS', Description: 'Natural account', hash: '00020000000EACED0005770800000000000493E4' }];
 const ACCOUNT_VALUES = NATURAL_ACCOUNTS.map(([account, description, type], i) => ({
   ValueId: 400000 + i, Value: account, Description: description, AccountType: type,
   EnabledFlag: account === '91900' ? 'N' : 'Y', SummaryFlag: 'N', DetailPostingAllowed: 'Y', StartDateActive: null, EndDateActive: null,

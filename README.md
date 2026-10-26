@@ -17,7 +17,7 @@ Basic auth: `fusion.integration` / `Welcome1` (override with `MOCK_USER`, `MOCK_
 | `POST /erpintegrations` | `OperationName: importBulkData`, base64 zip containing `GlInterface.csv` → returns `ReqstId` |
 | `GET /erpintegrations?finder=ESSJobStatusRF;requestId=X` | `WAIT` → `RUNNING` → `SUCCEEDED` / `WARNING` (some rejected) / `ERROR` |
 | `GET /erpintegrations?finder=ESSJobExecutionDetailsRF;requestId=X;fileType=log` | base64 zip with `<id>.log` and `<id>_results.json` |
-| `GET /valueSets?finder=ValueSetCodeFinder;ValueSetCode=CH_NATURAL_ACCOUNT` → follow its `values` link | Natural account values: `Value`, `Description`, `AccountType`, `EnabledFlag`, `SummaryFlag` |
+| `GET /valueSets?finder=ValueSetCodeFinder;ValueSetCode=ACCOUNTS` → follow its `values` link | Natural account values: `Value`, `Description`, `AccountType`, `EnabledFlag`, `SummaryFlag` |
 | `GET /journalSourcesLOV`, `GET /journalCategoriesLOV` | Journal sources / categories (`UserJeSourceName`, `UserJeCategoryName`) |
 | `GET /journalBatches?q=GroupId=77` | Imported journals |
 
