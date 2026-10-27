@@ -32,3 +32,14 @@ Journals are grouped by GROUP_ID + REFERENCE4; batches by REFERENCE1. `journalBa
 
 ## Debug (no auth)
 `GET /mock/jobs`, `GET /mock/journals`, `GET /mock/accounts` (valid account codes to type in the mapping), `POST /mock/reset`. State is in memory and clears on restart.
+
+## HiveIQ dataset (IKEA KSA)
+Logging in as `hiveiq.integration` / `Welcome1` (override `MOCK_IKEA_USER`, `MOCK_IKEA_PASSWORD`) serves a separate dataset from `data/ikea-ksa.json`; the `fusion.integration` login (Contract Hive) is unchanged.
+
+| Call | Purpose |
+|---|---|
+| `GET /ledgersLOV` | One ledger: IKEA KSA Primary Ledger (SAR) |
+| `GET /valueSets?finder=ValueSetCodeFinder;ValueSetCode=X` → `values` link | `IKSA_COMPANY`, `IKSA_ACCOUNT` (1030 accounts, `AccountType` A/L/O/R/E), `IKSA_DEPARTMENT`, `IKSA_PROJECT`, `IKSA_SERVICE_LINE` |
+| `GET /ledgerBalances?finder=AccountBalanceByCombinationFinder;ledgerName=…;accountingPeriod=Oct-26` | Closing balance per combination `Company-Account-Department-Project-ServiceLine` (`EndingBalance` net Dr+/Cr−, P&L year-to-date). Periods: Aug-26, Sep-26, Oct-26 |
+
+The `ledgerBalances` field names are from memory of Oracle's resource, not verified against a live pod — adjust `ikea.js` and HiveIQ's `services/oracle.service.js` together if a real pod differs.
