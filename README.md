@@ -43,3 +43,14 @@ Logging in as `hiveiq.integration` / `Welcome1` (override `MOCK_IKEA_USER`, `MOC
 | `GET /ledgerBalances?finder=AccountBalanceByCombinationFinder;ledgerName=…;accountingPeriod=Oct-26` | Closing balance per combination `Company-Account-Department-Project-ServiceLine` (`EndingBalance` net Dr+/Cr−, P&L year-to-date). Periods: Aug-26, Sep-26, Oct-26 |
 
 The `ledgerBalances` field names are from memory of Oracle's resource, not verified against a live pod — adjust `ikea.js` and HiveIQ's `services/oracle.service.js` together if a real pod differs.
+
+## Cash-forecasting dataset (Cash Flow AI ingest)
+Logging in as `cashforecast.integration` / `Welcome1` (override `MOCK_CF_USER`, `MOCK_CF_PASSWORD`) serves `data/cashforecast.json`: the rows of `actual_cash_forecast_small_3sheet.xlsx` and `forecast_cash_forecast_small.xlsx`, one collection per sheet, with the sheet's own column names.
+
+| Call | Purpose |
+|---|---|
+| `GET /cashForecastSources` | Catalogue: `Resource`, `Kind` (actual / forecast), `Name`, `RowCount`, `Columns` |
+| `GET /receivablesInvoices`, `/invoices`, `/payablesPayments` | Actuals: Customer_Revenue (AR), Vendor_Data (AP), Other_Overheads (OH) |
+| `GET /salesForecasts`, `/purchaseForecasts`, `/overheadForecasts` | Forecast: Sales, Purchase, Overheads |
+
+Paged like Fusion (`limit`, `offset`, `hasMore`; `q=bu_code=BU-EMEA-01` filters). The forecast collections and `cashForecastSources` are mock stand-ins — Fusion has no such resources; a real setup would expose them through a BI Publisher report or EPM export.

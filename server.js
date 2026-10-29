@@ -4,6 +4,7 @@
 import express from 'express';
 import AdmZip from 'adm-zip';
 import { ikeaRouter, IKEA_USER, IKEA_PASSWORD } from './ikea.js';
+import { cashForecastRouter, CF_USER, CF_PASSWORD } from './cashforecast.js';
 
 const PORT = process.env.PORT || 5050;
 const USERNAME = process.env.MOCK_USER || 'fusion.integration';
@@ -304,12 +305,15 @@ app.use(BASE, (req, res, next) => {
     const [user, pass] = Buffer.from(encoded, 'base64').toString().split(':');
     if (user === USERNAME && pass === PASSWORD) return next();
     if (user === IKEA_USER && pass === IKEA_PASSWORD) { req.ikea = true; return next(); }
+    if (user === CF_USER && pass === CF_PASSWORD) { req.cashForecast = true; return next(); }
   }
   res.set('WWW-Authenticate', 'Basic realm="Oracle Fusion"').status(401).json({ title: 'Unauthorized', status: '401' });
 });
 
 const ikea = ikeaRouter(BASE, (...a) => collection(...a), (...a) => applyQ(...a));
 app.use(BASE, (req, res, next) => (req.ikea ? ikea(req, res, next) : next()));
+const cashForecast = cashForecastRouter((...a) => collection(...a), (...a) => applyQ(...a));
+app.use(BASE, (req, res, next) => (req.cashForecast ? cashForecast(req, res, next) : next()));
 
 const collection = (items, req) => {
   const limit = Number(req.query.limit) || 25;
